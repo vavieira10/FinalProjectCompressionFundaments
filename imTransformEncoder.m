@@ -38,9 +38,12 @@ szBitstream = N*N*log2(M);
 n8 = ceil(szBitstream/8);
 sortedQuanDctArray = zeros(64, 1); % array que vai receber os valores retornados do zigzag
 countOfZeros = 0;
+% vetor de structs que vai armazenar o array reordenado dos componentes DCT
+% e a quantidade de zeros presentes no mesmo, para cada bloco
+blocksArray = struct('runLengthArray',{},...
+                  'countOfZeros',{});
 
 %% Percorrendo os blocos de tamanho 8x8, calculando o dct, quantizando cada um, reordenando e escrevendo no arquivo de saida cada um
-block = 1;
 for i = 1:N:w
     for j = 1:N:h
         currentBlock = image(i:(i + N - 1), j:(j + N - 1));
@@ -50,8 +53,12 @@ for i = 1:N:w
         sortedQuantDctArray = zigzag(quantizedDCT); % usando o algoritmo zigzag para reordenar os coeficientes DCT
         [runLenghtArray, countOfZeros] = runLengthCoding(sortedQuantDctArray); % aplica o algoritmo run length coding no vetor reordenado pelo zigzag
         
-        
-        block = block + 1;
+        % x eh uma struct temporario para armazenar os valores que
+        % correspondem ao vetor reordenado e o count de 0s no final do array
+        x.runLengthArray = runLenghtArray;
+        x.countOfZeros = countOfZeros;
+        blocksArray(end + 1) = x;
+
     end
 end
 
