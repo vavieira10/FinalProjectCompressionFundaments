@@ -1,11 +1,14 @@
-function ciqaEncoder(image, outputFile)
+function codedBlocks = imTransformEncoder(image, alpha)
 %Funcao que vai implementar a etapa de codificacao do codificador de
 %imagens por transformada
-% Funcao recebe uma imagem, e o nome do arquivo binario a ser codificado
+% Funcao recebe uma imagem, o nome do arquivo binario a ser codificado e um
+% parametro para ser usado na matriz de quantizacao
+% Retorna um vetor de structs, aonde cada struct contem o vetor reordenado
+% e a quantidade de zeros do vetor antes do run-length coding, de todos os
+% blocos
 
 %% Inicializacao das variaveis
 [h, w, c] = size(image); % altura, comprimento e canais da imagem
-outputFile = [outputFile '.bin'];
 
 if(c > 1)
     error('Only gray scale images are accepted as arguments!');
@@ -13,7 +16,9 @@ end
 
 % O passo de quantizacao usado eh padrao, e vai utilizar uma das matrizes
 % padrao usadas em codificadores como MPEG-2 ou H264
-quantizationMatrix = [16 11 10 16 24 40 51 61;
+% Vai ser multiplicado pelo parametro alpha, que servira para ajustar a
+% quantidade de quantizacao
+quantizationMatrix = alpha.*[16 11 10 16 24 40 51 61;
                       12 12 14 19 26 58 60 55;
                       14 13 16 24 40 57 69 56;
                       14 17 22 29 51 87 80 62;
@@ -29,18 +34,13 @@ N = 8; % dimensao do bloco
 amountBlocks = (h*w)/(N*N);
 blockVector = zeros(N*N, 1);
 
-% Ja escreve algumas informacoes no cabecalho
-% fid = fopen(outputFile, 'wb');
-% fwrite(fid, h, 'uint16');
-% fwrite(fid, w, 'uint16');
-
 szBitstream = N*N*log2(M);
 n8 = ceil(szBitstream/8);
 sortedQuanDctArray = zeros(64, 1); % array que vai receber os valores retornados do zigzag
 countOfZeros = 0;
 % vetor de structs que vai armazenar o array reordenado dos componentes DCT
 % e a quantidade de zeros presentes no mesmo, para cada bloco
-blocksArray = struct('runLengthArray',{},...
+codedBlocks = struct('runLengthArray',{},...
                   'countOfZeros',{});
 
 %% Percorrendo os blocos de tamanho 8x8, calculando o dct, quantizando cada um, reordenando e escrevendo no arquivo de saida cada um
@@ -57,12 +57,11 @@ for i = 1:N:w
         % correspondem ao vetor reordenado e o count de 0s no final do array
         x.runLengthArray = runLenghtArray;
         x.countOfZeros = countOfZeros;
-        blocksArray(end + 1) = x;
+        codedBlocks(end + 1) = x;
 
     end
 end
 
-% fclose(fid);
 
 end
 

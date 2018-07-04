@@ -1,4 +1,4 @@
-function decodedImage = ciqaDecoder(inputFile)
+function decodedImage = ciqaDecoder(inputFile, alpha)
 
 % O passo de quantizacao usado eh padrao, e vai utilizar a matriz padrao do
 % JPEG
