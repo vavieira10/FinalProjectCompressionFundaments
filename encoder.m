@@ -10,11 +10,12 @@ tic
 imageFolder = 'Image Database/';
 inputImage = 'lena.bmp';  % MUDE O NOME DO ARQUIVO
 image = imread([imageFolder inputImage]);
+[h, w, c] = size(image); % altura, comprimento e canais da imagem
 outputFile = strsplit(inputImage, '.');
 outputFile = outputFile(1);
 
 %% Codificacao da imagem usando o codificador do trabalho 3
-alpha = 1.2;
+alpha = 0.5;
 codedBlocks = imTransformEncoder(image, alpha);
 
 % Gerando a string que sera usada para fazer a codificacao huffman
@@ -44,5 +45,5 @@ bitstream = huffmanEncoder(codesTable, stringToBeEncoded);
 
 % Escrevendo o arquivo comprimido
 outputFile = [outputFile{1, 1} '.bin']; % concatena nome original com .bin no final
-escreveBitstream(outputFile, bitstream, codesTable);
+escreveBitstream(outputFile, bitstream, codesTable, h, w, alpha);
 toc

@@ -1,4 +1,4 @@
-function escreveBitstream(nomeArquivo, bitstream, SimbCodigos)
+function escreveBitstream(nomeArquivo, bitstream, SimbCodigos, h, w, alpha)
 % Funcao que recebe o bitsream gerado pelo codificador huffman e gera o
 % arquivo comprimido, com o devido cabecalho
 
@@ -33,6 +33,9 @@ fp = fopen(nomeArquivo, 'wb');
 tamanhoCabecalho = length(cabecalho);
 tamanhoCabecalho % imprime o tamanho do header
 fwrite(fp, n, 'uint32');
+fwrite(fp, h, 'uint16'); % altura da imagem
+fwrite(fp, w, 'uint16'); % largura da imagem
+fwrite(fp, alpha, 'double');
 fwrite(fp, tamanhoCabecalho, 'uint16');
 fwrite(fp, cabecalho, 'uint8');
 fwrite(fp, bitstream2, 'uint8');

@@ -12,7 +12,7 @@ tic
 fileName = 'lena.bin'; % MUDE O NOME DO ARQUIVO
 fileType = 2; % SE FOR 1 EH TXT, SENAO EH QUALQUER OUTRO FORMATO DE ARQUIVO
 
-[bitstream, alphabet, codes] = leBitsTream(fileName, fileType);
+[bitstream, alphabet, codes, h, w, alpha] = leBitsTream(fileName, fileType);
 
 
 %% Decodificacao huffmann do bitstream 
@@ -22,6 +22,7 @@ originalSequence = huffmanDecoder(bitstream, alphabet, codes, fileType);
 originalSequence = char(originalSequence);
 originalSequence = originalSequence';
 originalSequence = strsplit(originalSequence, char(10)); % separando a string pela quebra de linha
+toc
 
 %% Decodificacao do codificador do trabalho 3
 % A partir da sequencia original, reconstruir a struct com a contagem de 0s
@@ -34,14 +35,22 @@ codedBlocks = struct('runLengthArray',{},...
 amountBlocks = length(originalSequence) - 1;
 for i = 1:amountBlocks
    block = strsplit(originalSequence{i}, ' '); % quebrando a string de cada bloco pelo espaco
-   tempArray = zeros(length(block) - 1, 1);
-   % Loop pra montar o run length array
-   for j = 1:length(tempArray)
-       tempArray(j, 1) = str2num(block{j + 1});
+   lengthBlockArray = length(block) - 1;
+   tempArray = zeros(lengthBlockArray, 1);
+   if(str2num(block{1}) ~= 64)
+       % Loop pra montar o run length array
+       for j = 1:length(tempArray)
+           tempArray(j, 1) = str2num(block{j + 1});
+       end
+       x.runLengthArray = tempArray;
+   else
+       x.runLengthArray = [];
    end
-   x.runLengthArray = tempArray;
+      
    x.countOfZeros = str2num(block{1});
    codedBlocks(end + 1) = x;
 end
 
+tic
+decodedImage = imTransformDecoder(codedBlocks, h, w, alpha);
 toc

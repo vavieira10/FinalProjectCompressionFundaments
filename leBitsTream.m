@@ -8,13 +8,17 @@
 %    bitstream: o bitstream lido.
 %    cabecalho: cabecalho que contem os simbolos e seus codigos
 %
-function [bitstream, alfabeto, codigos] = leBitsTream(filename, tipoArq)
+function [bitstream, alfabeto, codigos, h, w, alpha] = leBitsTream(filename, tipoArq)
 
 %Abre o arquivo
 fid = fopen(filename,'rb');
 
 %L� o n�mero de bits escrito.
 n = fread(fid, 1, 'uint32');
+
+h = fread(fid, 1, 'uint16'); % altura da imagem
+w = fread(fid, 1, 'uint16'); % largura da imagem
+alpha = fread(fid, 1, 'double');
 
 %Calcula o n�mero de bytes escrito.
 n8 = ceil(n/8);
