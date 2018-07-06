@@ -44,23 +44,23 @@ codedBlocks = struct('runLengthArray',{},...
                   'countOfZeros',{});
 
 %% Percorrendo os blocos de tamanho 8x8, calculando o dct, quantizando cada um, reordenando e escrevendo no arquivo de saida cada um
-for i = 1:N:w
-    for j = 1:N:h
-        currentBlock = image(i:(i + N - 1), j:(j + N - 1));
-        currentBlock = currentBlock - 128; % subtrai todos os pixels por 128, para centralizar os componentes DC da DCT
-        dctBlock = dct2(currentBlock); % calcula o DCT 2D para o bloco atual
-        quantizedDCT = round(dctBlock./quantizationMatrix); % dividindo cada um dos elementos do bloco pelo correspondente na matriz de quantizacao
-        sortedQuantDctArray = zigzag(quantizedDCT); % usando o algoritmo zigzag para reordenar os coeficientes DCT
-        [runLenghtArray, countOfZeros] = runLengthCoding(sortedQuantDctArray); % aplica o algoritmo run length coding no vetor reordenado pelo zigzag
-        
-        % x eh uma struct temporario para armazenar os valores que
-        % correspondem ao vetor reordenado e o count de 0s no final do array
-        x.runLengthArray = runLenghtArray;
-        x.countOfZeros = countOfZeros;
-        codedBlocks(end + 1) = x;
-
-    end
+blocks = reshape(image, N, N, []);
+for i = 1:amountBlocks
+    currentBlock = blocks(i);
+    currentBlock = currentBlock - 128; % subtrai todos os pixels por 128, para centralizar os componentes DC da DCT
+    dctBlock = dct2(currentBlock); % calcula o DCT 2D para o bloco atual
+    quantizedDCT = round(dctBlock./quantizationMatrix); % dividindo cada um dos elementos do bloco pelo correspondente na matriz de quantizacao
+    sortedQuantDctArray = zigzag(quantizedDCT); % usando o algoritmo zigzag para reordenar os coeficientes DCT
+    [runLenghtArray, countOfZeros] = runLengthCoding(sortedQuantDctArray); % aplica o algoritmo run length coding no vetor reordenado pelo zigzag
+    
+    % x eh uma struct temporario para armazenar os valores que
+    % correspondem ao vetor reordenado e o count de 0s no final do array
+    x.runLengthArray = runLenghtArray;
+    x.countOfZeros = countOfZeros;
+    codedBlocks(end + 1) = x;
+    
 end
+
 
 
 end

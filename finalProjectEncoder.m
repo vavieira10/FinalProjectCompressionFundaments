@@ -7,6 +7,7 @@ function finalProjectEncoder(sequenceFrames, outputFolder, outputFilename, macro
 % redundancia da codificacao Huffman
 
 addpath('./BlockMatchingAlgoMPEG');
+addpath('./SabadoToolbox/');
 
 %% Inicializando as variaveis a serem usadas
 finalOutput = [outputFolder outputFilename];
