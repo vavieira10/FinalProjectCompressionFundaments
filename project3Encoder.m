@@ -1,5 +1,5 @@
-function codedBlocks = project3Encoder(image, outputFile, alpha) 
-% Funcao que recebe uma string o nome da imagem a ser usada, o nome do
+function [codedBlocks, bitstream] = project3Encoder(image, outputFile, alpha) 
+% Funcao que recebe uma umagem, o nome do
 % arquivo de saida e o parametro a ser usado na codificacao
 
 % Retorna os blocos codificados, a entropia, comprimento medio e

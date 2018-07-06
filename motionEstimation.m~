@@ -1,0 +1,7 @@
+function [motionVectors, Prediction] = motionEstimation(currFrame, refFrame)
+% Funcao que recebe o frame sendo processado e um frame de referencia
+% Retorna os vetores de movim
+
+
+end
+

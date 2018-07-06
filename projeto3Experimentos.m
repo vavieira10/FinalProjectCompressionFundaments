@@ -12,6 +12,7 @@ PSNR = zeros(1, amountAlphas);
 MSE = zeros(1, amountAlphas);
 imageFolder = 'Image Database/';
 resultImageFolder = 'Result_Image/';
+encodedFilesFolder = 'EncodedFiles/';
 imageFile = 'lena.bmp';
 imageName = strsplit(imageFile, '.');
 imageName = imageName{1, 1};
@@ -20,8 +21,8 @@ image = imread([imageFolder imageFile]);
 
 %% Fazendo os experimentos para cada alpha do codificador do projeto 3
 for i = 1:amountAlphas
-    outputFile = [imageName '_Alpha' num2str(alphas(i))];
-    codedBlocks = project3Encoder(image, outputFile, alphas(i));
+    outputFile = [encodedFilesFolder imageName '_Alpha' num2str(alphas(i))];
+    [codedBlocks, ~] = project3Encoder(image, outputFile, alphas(i));
     decodedImage = imTransformDecoder(codedBlocks, h, w, alphas(i));
     imwrite(decodedImage, [resultImageFolder outputFile '.png']);
     groups{i} = ['Alpha = ' num2str(alphas(i))];
