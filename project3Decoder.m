@@ -1,18 +1,16 @@
-%% Script que implementa a decodificacao de uma fonte
+function decodedImage = project3Decoder(inputFile) 
+% Funcao que recebe uma string o nome da imagem a ser usada, o nome do
+% arquivo de saida e o parametro a ser usado na codificacao
 
-clc;
-clear all;
-close all;
+% Retorna a imagem decodificada
 
 tic
 %% Leitura do arquivo codificado
 % Le o arquivo codificado e retorna o bitstream, alfabeto e os codigos da
 % fonte original codificada
-
-fileName = 'lena.bin'; % MUDE O NOME DO ARQUIVO
 fileType = 2; % SE FOR 1 EH TXT, SENAO EH QUALQUER OUTRO FORMATO DE ARQUIVO
 
-[bitstream, alphabet, codes, h, w, alpha] = leBitsTream(fileName, fileType);
+[bitstream, alphabet, codes, h, w, alpha] = leBitsTream(inputFile, fileType);
 
 
 %% Decodificacao huffmann do bitstream 
@@ -54,3 +52,5 @@ end
 tic
 decodedImage = imTransformDecoder(codedBlocks, h, w, alpha);
 toc
+
+end

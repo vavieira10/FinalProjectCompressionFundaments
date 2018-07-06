@@ -1,21 +1,15 @@
-%% Script que implementa a codificacao de uma fonte
+function codedBlocks = project3Encoder(image, outputFile, alpha) 
+% Funcao que recebe uma string o nome da imagem a ser usada, o nome do
+% arquivo de saida e o parametro a ser usado na codificacao
 
-clc;
-clear all;
-close all;
+% Retorna os blocos codificados, a entropia, comprimento medio e
+% redundancia da codificacao Huffman
 
 tic
 %% Leitura da imagem
-% Le uma imagem
-imageFolder = 'Image Database/';
-inputImage = 'lena.bmp';  % MUDE O NOME DO ARQUIVO
-image = imread([imageFolder inputImage]);
 [h, w, c] = size(image); % altura, comprimento e canais da imagem
-outputFile = strsplit(inputImage, '.');
-outputFile = outputFile(1);
 
 %% Codificacao da imagem usando o codificador do trabalho 3
-alpha = 0.9;
 codedBlocks = imTransformEncoder(image, alpha);
 
 % Gerando a string que sera usada para fazer a codificacao huffman
@@ -25,8 +19,8 @@ stringToBeEncoded = generateStringBlocks(codedBlocks);
 symbAndProbabs = structGenerator(stringToBeEncoded);
 
 % Calculando a entropia
-entropia = calculaEntropia(symbAndProbabs);
-entropia
+huffmanEntropy = calculaEntropia(symbAndProbabs);
+huffmanEntropy
 
 % Codificacao pelo algoritmo huffman e calculo do comprimento medio
 % Chamada do algoritmo de huffman, que vai retornar a arvore huffman e uma
@@ -34,16 +28,18 @@ entropia
 [huffmanTree, codesTable] = codHuffman(symbAndProbabs);
 
 % Calculo do comprimento medio e da redundancia
-comprMedio = calculaComprMedio(symbAndProbabs, codesTable);
-comprMedio
-redundancia = comprMedio - entropia;
-redundancia
+huffmanAvgLength = calculaComprMedio(symbAndProbabs, codesTable);
+huffmanAvgLength
+huffmanRedudancy = huffmanAvgLength - huffmanEntropy;
+huffmanRedudancy
 
 % Chamada do codificador de huffman, que vai retornar um bitstream para ser
 % escrito no arquivo final codificado
 bitstream = huffmanEncoder(codesTable, stringToBeEncoded);
 
 % Escrevendo o arquivo comprimido
-outputFile = [outputFile{1, 1} '.bin']; % concatena nome original com .bin no final
+outputFile = [outputFile '.bin']; % concatena nome original com .bin no final
 escreveBitstream(outputFile, bitstream, codesTable, h, w, alpha);
 toc
+
+end

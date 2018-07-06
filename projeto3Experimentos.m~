@@ -1,0 +1,34 @@
+%% Script que implementa a codificacao do trabalho 3
+
+clc;
+clear all;
+close all;
+
+%% Inicializando as variaveis a serem usadas
+alphas = [0.05, 0.1, 0.3, 0.5, 0.7, 1, 1.3, 1.5, 1.7, 3, 4, 5, 7, 9, 10
+    ]; % alphas que serao usados no experimento;
+amountAlphas = length(alphas);
+R = zeros(1, amountAlphas);
+PSNR = zeros(1, amountAlphas);
+MSE = zeros(1, amountAlphas);
+imageFolder = 'Image Database/';
+resultImageFolder = 'Result_Image/';
+imageFile = 'lena.bmp';
+imageName = strsplit(imageFile, '.');
+imageName = imageName{1, 1};
+image = imread([imageFolder imageFile]);
+[h, w, c] = size(image);
+
+%% Fazendo os experimentos para cada alpha do codificador do projeto 3
+for i = 1:amountAlphas
+    codedBlocks = imTransformEncoder(image, alphas(i));
+    decodedImage = imTransformDecoder(codedBlocks, h, w, alphas(i));
+    imwrite(decodedImage, [resultImageFolder imageName '_Alpha' num2str(alphas(i)) '.png']);
+    groups{i} = ['Alpha = ' num2str(alphas(i))];
+    R(i) = 3;
+    PSNR(i) = psnr(decodedImage, image);
+    MSE(i) = immse(decodedImage, image);
+end
+
+% groups = groups';
+% gscatter(mse, R, groups);
