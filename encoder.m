@@ -15,7 +15,7 @@ outputFile = strsplit(inputImage, '.');
 outputFile = outputFile(1);
 
 %% Codificacao da imagem usando o codificador do trabalho 3
-alpha = 0.5;
+alpha = 0.9;
 codedBlocks = imTransformEncoder(image, alpha);
 
 % Gerando a string que sera usada para fazer a codificacao huffman

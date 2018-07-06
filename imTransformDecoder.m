@@ -2,7 +2,7 @@ function decodedImage = imTransformDecoder(codedBlocks, h, w, alpha)
 
 % O passo de quantizacao usado eh padrao, e vai utilizar a matriz padrao do
 % JPEG
-quantizationMatrix = alpha.*[16 11 10 16 24 40 51 61;
+quantizationMatrix = alpha*[16 11 10 16 24 40 51 61;
                       12 12 14 19 26 58 60 55;
                       14 13 16 24 40 57 69 56;
                       14 17 22 29 51 87 80 62;
@@ -20,8 +20,8 @@ amountBlocks = (h*w)/(N*N);
 %Calcula o n�mero de bytes escrito para cada bloco.
 
 decodedBlocks = zeros(N*N, amountBlocks);
-
-%% Parte que vai pegar o vetor de structs que correspondem a cada bloco e vai gerar uma matriz aonde cada linha corresponde a um bloco
+block = zeros(N, N);
+%% Parte que vai pegar o vetor de structs que correspondem a cada bloco e vai decodificar os blocos e prepara-los para gerar a imagem decodificada
 for i= 1:length(codedBlocks)
     if(codedBlocks(i).countOfZeros ~= 64)
         runlengthArray = codedBlocks(i).runLengthArray; % run length vector
@@ -30,12 +30,6 @@ for i= 1:length(codedBlocks)
     end
     zerosArray = zeros(codedBlocks(i).countOfZeros, 1); % criando um vetor de 0s que vai ser concatenado com o run length array
     decodedBlocks(:, i) = [runlengthArray; zerosArray];
-    
-end
-
-%% Parte que vai decodificar os blocos e prepara-los para gerar a imagem decodificada
-block = zeros(N, N);
-for i = 1:amountBlocks
     block = invzigzag(decodedBlocks(:, i)); % using the inverse zigzag
     desquantizedBlock = block.*quantizationMatrix; % desquantizar o bloco
     inverseDctBlock = idct2(desquantizedBlock); % inversa dct do bloco
@@ -44,7 +38,7 @@ for i = 1:amountBlocks
 end
 
 
-decodedBlocks = floor(decodedBlocks);
+decodedBlocks = round(decodedBlocks);
 %Fecha o arquivo.
 decodedImage = zeros(h, w);
 counter = 1;

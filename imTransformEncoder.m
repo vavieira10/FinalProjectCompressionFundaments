@@ -7,6 +7,8 @@ function codedBlocks = imTransformEncoder(image, alpha)
 % e a quantidade de zeros do vetor antes do run-length coding, de todos os
 % blocos
 
+image = double(image); % transformando a imagem em double, para subtrair 128
+
 %% Inicializacao das variaveis
 [h, w, c] = size(image); % altura, comprimento e canais da imagem
 
@@ -18,7 +20,7 @@ end
 % padrao usadas em codificadores como MPEG-2 ou H264
 % Vai ser multiplicado pelo parametro alpha, que servira para ajustar a
 % quantidade de quantizacao
-quantizationMatrix = alpha.*[16 11 10 16 24 40 51 61;
+quantizationMatrix = alpha*[16 11 10 16 24 40 51 61;
                       12 12 14 19 26 58 60 55;
                       14 13 16 24 40 57 69 56;
                       14 17 22 29 51 87 80 62;
@@ -34,8 +36,6 @@ N = 8; % dimensao do bloco
 amountBlocks = (h*w)/(N*N);
 blockVector = zeros(N*N, 1);
 
-szBitstream = N*N*log2(M);
-n8 = ceil(szBitstream/8);
 sortedQuanDctArray = zeros(64, 1); % array que vai receber os valores retornados do zigzag
 countOfZeros = 0;
 % vetor de structs que vai armazenar o array reordenado dos componentes DCT
