@@ -3,13 +3,13 @@ lengthq = 0;
 simbolo = [];
 counter = 1;
 i = 1;
-while(i<length(bitstream))
+while(i<=length(bitstream))
     switch bitstream(i)
         case '1'
             if lengthq == 0
-                simbolo = 0;
+                simbolo(counter) = 0;
                 i = i + 1;
-                break
+                counter = counter + 1;
             else
                 x = bin2dec(bitstream(i+1 : i+lengthq));
                 simbolo(counter) = 2^lengthq + x -1;
@@ -24,10 +24,11 @@ while(i<length(bitstream))
     
     
 end
+
 [~,N]=size(simbolo);
 for j=1:N
     simbolo(j) = (-1)^(simbolo(j)+1)*ceil(simbolo(j)/2);
-    bitstream = [simbolo];
+    motionVectors = simbolo;
 end
 
 end

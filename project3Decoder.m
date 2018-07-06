@@ -1,6 +1,7 @@
-function decodedImage = project3Decoder(inputFile) 
+function decodedImage = project3Decoder(inputFile, N) 
 % Funcao que recebe uma string o nome da imagem a ser usada, o nome do
-% arquivo de saida e o parametro a ser usado na codificacao
+% arquivo de saida, o parametro a ser usado na codificacao e o tamanho do
+% bloco que foi usado
 
 % Retorna a imagem decodificada
 

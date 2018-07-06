@@ -13,22 +13,25 @@ MSE = zeros(1, amountAlphas);
 imageFolder = 'Image Database/';
 resultImageFolder = 'Result_Image/';
 encodedFilesFolder = 'EncodedFiles/';
-imageFile = 'lena.bmp';
+imageFile = 'lena.bmp'; % MUDE O NOME DA IMAGEM AQUI
 imageName = strsplit(imageFile, '.');
 imageName = imageName{1, 1};
 image = imread([imageFolder imageFile]);
 [h, w, c] = size(image);
+N = 8;
 
 %% Fazendo os experimentos para cada alpha do codificador do projeto 3
 for i = 1:amountAlphas
     outputFile = [encodedFilesFolder imageName '_Alpha' num2str(alphas(i))];
-    [codedBlocks, ~] = project3Encoder(image, outputFile, alphas(i));
-    decodedImage = imTransformDecoder(codedBlocks, h, w, alphas(i));
+    [codedBlocks, ~] = project3Encoder(image, outputFile, alphas(i), N);
+    decodedImage = imTransformDecoder(codedBlocks, h, w, alphas(i), N);
+    outputFile = [imageName '_Alpha' num2str(alphas(i))];
     imwrite(decodedImage, [resultImageFolder outputFile '.png']);
     groups{i} = ['Alpha = ' num2str(alphas(i))];
     
     % pega o tamanho do arquivo binario gerado e calcula a taxa a partir
     % disso
+    outputFile = [encodedFilesFolder imageName '_Alpha' num2str(alphas(i))];
     encodedFile = dir([outputFile '.bin']);
     fileSize = encodedFile.bytes;
     R(i) = (fileSize*8)/(h*w); % numero de bytes * 8 bits / (numero total de pixels da imagem)

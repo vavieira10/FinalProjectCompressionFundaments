@@ -1,4 +1,4 @@
-function codedBlocks = imTransformEncoder(image, alpha)
+function codedBlocks = imTransformEncoder(image, alpha, N)
 %Funcao que vai implementar a etapa de codificacao do codificador de
 %imagens por transformada
 % Funcao recebe uma imagem, o nome do arquivo binario a ser codificado e um
@@ -30,8 +30,6 @@ quantizationMatrix = alpha*[16 11 10 16 24 40 51 61;
                       72 92 95 98 112 100 103 99];
 
 % Parametros fixos do algoritmo
-M = 8; % nivel de quantizacao
-N = 8; % dimensao do bloco
 
 amountBlocks = (h*w)/(N*N);
 blockVector = zeros(N*N, 1);

@@ -1,7 +1,8 @@
-function [codedFrames, bitstreamF0, framesBistreams] = finalProjectEncoder(sequenceFrames, outputFolder, outputFilename, macroBlockSize, alpha) 
-% Funcao que recebe uma string o nome da imagem a ser usada, o nome do
-% arquivo de saida, o tamanho do macro bloco na estimacao de movimento e o 
-% parametro a ser usado no codificador do projeto 3
+function [codedFrames, bitstreamF0, framesBistreams] = finalProjectEncoder(sequenceFrames, outputFolder, outputFilename, macroBlockSize, alpha, N) 
+% Funcao que recebe sequencia de frames, o nome do
+% arquivo de saida, o tamanho do macro bloco na estimacao de movimento, o 
+% parametro a ser usado no codificador do projeto 3 e o tamanho do bloco a
+% ser usado no codificador do projeto 3
 
 % Retorna os frames codificados, e os bitstreams
 
@@ -25,38 +26,13 @@ firstFrame = sequenceFrames(:, :, 1);
 
 % struct que vai armazenar os bitstreams do motionvector e do residuo para
 % cada frame
-framesBistreams = struct('motionVector',{},...
+framesBistreams = struct('motionVector1',{},...
+                  'motionVector2',{},...
                   'residual',{});
               
 
-%% Codificando o primeiro frame (frame intra) usando o codificador do projeto 3
-[codedBlocksFirstFrame, bitstreamF0] = project3Encoder(firstFrame, [finalOutput 'F1'], alpha);
-% ao inves de chamar o decodificador que tem que decodificar o huffma, chama o decodificador ja em posso dos blocos codificados
-decodedFrame = imTransformDecoder(codedBlocksFirstFrame, cropParameter, cropParameter, alpha);
-
-codedFrames = zeros(cropParameter, cropParameter, amountFrames);
-codedFrames(:, :, 1) = decodedFrame;
-
-%% Codificar o resto dos frames
-refFrame = decodedFrame;
-for f = 2:amountFrames
-    currFrame = sequenceFrames(:, :, f);
-    [motionVectors, P] = motionEstimation(currFrame, refFrame, macroBlockSize); % calculando os vetores de movimento e a predicao P
-    bitstreamMV = golomb_encoder(motionVectors); % gerando o bistream dos motion vectors usando codificacao Exp-Golomb
-    R = currFrame - P; % calculando o residuo do frame atual
-    
-    % codificando a imagem de residuo
-    [codedBlocksResidual, bitstreamR] = project3Encoder(R, [finalOutput 'F' num2str(f)], alpha); % codifica a imagem de residuo com o cdificador do projeto 3
-    decodedResidual = imTransformDecoder(codedBlocksResidual, cropParameter, cropParameter, alpha);
-    codedFrames(:, :, f) = decodedResidual;
-    
-    % salvando na struct dos bitstreams
-    x.motionVector = bitstreamMV; % x eh uma struct temporaria
-    x.residual = bitstreamR;
-    framesBistreams(end + 1) = x;
-    
-    refFrame = refFrame + decodedResidual; % o novo frame de referencia eh a soma da referencia passada com o residuo
-end
+%% Codificacao de video
+[codedFrames, bitstreamF0, framesBistreams] = videoEncoder(sequenceFrames, [finalOutput], macroBlockSize, alpha, N);
     
     
 end

@@ -1,6 +1,7 @@
-function [codedBlocks, bitstream] = project3Encoder(image, outputFile, alpha) 
+function [codedBlocks, bitstream] = project3Encoder(image, outputFile, alpha, N) 
 % Funcao que recebe uma umagem, o nome do
-% arquivo de saida e o parametro a ser usado na codificacao
+% arquivo de saida, o parametro a ser usado na codificacao e o tamanho do
+% bloco a ser usado
 
 % Retorna os blocos codificados, a entropia, comprimento medio e
 % redundancia da codificacao Huffman
@@ -10,7 +11,7 @@ function [codedBlocks, bitstream] = project3Encoder(image, outputFile, alpha)
 [h, w, c] = size(image); % altura, comprimento e canais da imagem
 
 %% Codificacao da imagem usando o codificador do trabalho 3
-codedBlocks = imTransformEncoder(image, alpha);
+codedBlocks = imTransformEncoder(image, alpha, N);
 
 % Gerando a string que sera usada para fazer a codificacao huffman
 stringToBeEncoded = generateStringBlocks(codedBlocks);

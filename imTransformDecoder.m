@@ -1,7 +1,11 @@
-function decodedImage = imTransformDecoder(codedBlocks, h, w, alpha)
+function decodedImage = imTransformDecoder(codedBlocks, h, w, alpha, N)
+%Funcao que vai implementar a etapa de decodificacao do decodificador de
+%imagens por transformada
+% Funcao recebe uma imagem, o nome do arquivo binario a ser codificado, um
+% parametro para ser usado na matriz de quantizacao e o tamanho do bloco a
+% ser usado
+% Retorna a imagem decodificada
 
-% O passo de quantizacao usado eh padrao, e vai utilizar a matriz padrao do
-% JPEG
 quantizationMatrix = alpha*[16 11 10 16 24 40 51 61;
                       12 12 14 19 26 58 60 55;
                       14 13 16 24 40 57 69 56;
@@ -13,8 +17,6 @@ quantizationMatrix = alpha*[16 11 10 16 24 40 51 61;
 
 
 %L� o n�mero de bits escrito.
-N = 8;
-M = 8;
 amountBlocks = (h*w)/(N*N);
 
 %Calcula o n�mero de bytes escrito para cada bloco.
