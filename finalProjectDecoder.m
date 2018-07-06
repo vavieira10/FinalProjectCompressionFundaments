@@ -1,9 +1,9 @@
-function [codedFrames, bitstreamF0, framesBistreams] = finalProjectEncoder(sequenceFrames, outputFolder, outputFilename, macroBlockSize, alpha) 
-% Funcao que recebe uma string o nome da imagem a ser usada, o nome do
-% arquivo de saida, o tamanho do macro bloco na estimacao de movimento e o 
+function [decodedFrameSequence] = finalProjectDecoder(inputFiles, macroBlockSize, alpha) 
+% Funcao que recebe uma lista de de arquivos a serem decodificados,
+% o tamanho do macro bloco na estimacao de movimento e o 
 % parametro a ser usado no codificador do projeto 3
 
-% Retorna os frames codificados, e os bitstreams
+% Retorna os blocos decodificados
 
 addpath('./BlockMatchingAlgoMPEG');
 addpath('./SabadoToolbox/');
@@ -34,9 +34,6 @@ framesBistreams = struct('motionVector',{},...
 % ao inves de chamar o decodificador que tem que decodificar o huffma, chama o decodificador ja em posso dos blocos codificados
 decodedFrame = imTransformDecoder(codedBlocksFirstFrame, cropParameter, cropParameter, alpha);
 
-codedFrames = zeros(cropParameter, cropParameter, amountFrames);
-codedFrames(:, :, 1) = decodedFrame;
-
 %% Codificar o resto dos frames
 refFrame = decodedFrame;
 for f = 2:amountFrames
@@ -48,7 +45,6 @@ for f = 2:amountFrames
     % codificando a imagem de residuo
     [codedBlocksResidual, bitstreamR] = project3Encoder(R, [finalOutput 'F' num2str(f)], alpha); % codifica a imagem de residuo com o cdificador do projeto 3
     decodedResidual = imTransformDecoder(codedBlocksResidual, cropParameter, cropParameter, alpha);
-    codedFrames(:, :, f) = decodedResidual;
     
     % salvando na struct dos bitstreams
     x.motionVector = bitstreamMV; % x eh uma struct temporaria

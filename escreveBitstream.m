@@ -31,7 +31,7 @@ end
 %strArquivo = [cabecalho bitstream];
 fp = fopen(nomeArquivo, 'wb');
 tamanhoCabecalho = length(cabecalho);
-tamanhoCabecalho % imprime o tamanho do header
+%tamanhoCabecalho % imprime o tamanho do header
 fwrite(fp, n, 'uint32');
 fwrite(fp, h, 'uint16'); % altura da imagem
 fwrite(fp, w, 'uint16'); % largura da imagem

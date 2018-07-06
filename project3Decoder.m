@@ -4,7 +4,7 @@ function decodedImage = project3Decoder(inputFile)
 
 % Retorna a imagem decodificada
 
-tic
+
 %% Leitura do arquivo codificado
 % Le o arquivo codificado e retorna o bitstream, alfabeto e os codigos da
 % fonte original codificada
@@ -20,7 +20,7 @@ originalSequence = huffmanDecoder(bitstream, alphabet, codes, fileType);
 originalSequence = char(originalSequence);
 originalSequence = originalSequence';
 originalSequence = strsplit(originalSequence, char(10)); % separando a string pela quebra de linha
-toc
+
 
 %% Decodificacao do codificador do trabalho 3
 % A partir da sequencia original, reconstruir a struct com a contagem de 0s
@@ -49,8 +49,8 @@ for i = 1:amountBlocks
    codedBlocks(end + 1) = x;
 end
 
-tic
+
 decodedImage = imTransformDecoder(codedBlocks, h, w, alpha);
-toc
+
 
 end

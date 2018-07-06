@@ -5,7 +5,7 @@ function [codedBlocks, bitstream] = project3Encoder(image, outputFile, alpha)
 % Retorna os blocos codificados, a entropia, comprimento medio e
 % redundancia da codificacao Huffman
 
-tic
+
 %% Leitura da imagem
 [h, w, c] = size(image); % altura, comprimento e canais da imagem
 
@@ -20,7 +20,6 @@ symbAndProbabs = structGenerator(stringToBeEncoded);
 
 % Calculando a entropia
 huffmanEntropy = calculaEntropia(symbAndProbabs);
-huffmanEntropy
 
 % Codificacao pelo algoritmo huffman e calculo do comprimento medio
 % Chamada do algoritmo de huffman, que vai retornar a arvore huffman e uma
@@ -29,9 +28,8 @@ huffmanEntropy
 
 % Calculo do comprimento medio e da redundancia
 huffmanAvgLength = calculaComprMedio(symbAndProbabs, codesTable);
-huffmanAvgLength
+
 huffmanRedudancy = huffmanAvgLength - huffmanEntropy;
-huffmanRedudancy
 
 % Chamada do codificador de huffman, que vai retornar um bitstream para ser
 % escrito no arquivo final codificado
@@ -40,6 +38,6 @@ bitstream = huffmanEncoder(codesTable, stringToBeEncoded);
 % Escrevendo o arquivo comprimido
 outputFile = [outputFile '.bin']; % concatena nome original com .bin no final
 escreveBitstream(outputFile, bitstream, codesTable, h, w, alpha);
-toc
+
 
 end
