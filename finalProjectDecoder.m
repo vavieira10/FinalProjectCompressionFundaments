@@ -6,6 +6,9 @@ function [decodedFrameSequence] = finalProjectDecoder(codedFrames, bitstreams, m
 
 % Retorna os blocos decodificados
 
+addpath('./BlockMatchingAlgoMPEG');
+addpath('./SabadoToolbox/');
+
 %% Decodifica os motion vectors
 motionVectors = decodeMotionVectors(bitstreams);
 

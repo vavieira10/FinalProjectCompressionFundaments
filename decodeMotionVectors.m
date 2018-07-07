@@ -3,7 +3,6 @@ function [motionVectors] = decodeMotionVectors(framesBitstreams)
 % os vetores de movimento
 
 amountMV = length(framesBitstreams);
-motionVectors = zeros(2, 81, amountMV);
 
 for i = 1:amountMV
     mvDim1 = golomb_decoder(framesBitstreams(i).motionVector1);
