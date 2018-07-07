@@ -32,7 +32,6 @@ framesBistreams = struct('motionVector1',{},...
               
 
 %% Codificacao de video
-[codedFrames, bitstreamF0, framesBistreams] = videoEncoder(sequenceFrames, [finalOutput], macroBlockSize, alpha, N);
-    
+[codedFrames, bitstreamF0, framesBistreams] = videoEncoder(sequenceFrames, [finalOutput], macroBlockSize, alpha, N);    
     
 end

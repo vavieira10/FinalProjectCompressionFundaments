@@ -1,7 +1,8 @@
 function [codedFrames, bitstreamF0, framesBistreams] = videoEncoder(sequenceFrames, outputFilename, macroBlockSize, alpha, N) 
-% Funcao que recebe uma string o nome da imagem a ser usada, o nome do
-% arquivo de saida, o tamanho do macro bloco na estimacao de movimento e o 
-% parametro a ser usado no codificador do projeto 3
+% Funcao que recebe umasequencia de frames, o nome do
+% arquivo de saida, o tamanho do macro bloco na estimacao de movimento, o 
+% parametro a ser usado no codificador do projeto 3 e o tamanho do bloco do
+% codificador do projeto 3
 
 % Retorna os frames codificados, e os bitstreams
 
